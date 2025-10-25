@@ -9,6 +9,20 @@ An AI-powered email reply generator consisting of:
 
 All clients call the backend at `http://localhost:8080`.
 
+## Screenshots
+
+### Web Application
+![Web View](Images/ss1.png)
+*The standalone web interface for the AI Email Replier where users can paste email content and generate replies*
+
+### Gmail Integration
+![Gmail Button](Images/ss2.png)
+*The "AI Reply" button integrated directly into Gmail's compose/reply interface*
+
+### Reply Generation
+![Generating Reply](Images/ss3.png)
+*The extension in action - button changes to "Generating..." while creating the AI-powered reply, which then appears in the text box*
+
 ## Repository Structure
 - `AI_Email_Chrome_Extension/`
   - Chrome Extension (Manifest V3) with `content.js` injected into Gmail.
@@ -34,7 +48,7 @@ Path: `AI_Email_Writer/email-writer-sb/`
 ### Configuration
 Set the following in `src/main/resources/application.properties`:
 
-```
+```properties
 # App
 spring.application.name=email-writer-sb
 
@@ -52,7 +66,7 @@ gemini.api.key=YOUR_GEMINI_API_KEY
 The service constructs the final request URL as `gemini.api.url + gemini.api.key` and sends a JSON body with the prompt.
 
 ### Run
-```
+```bash
 # from AI_Email_Writer/email-writer-sb/
 mvn spring-boot:run
 # or
@@ -82,7 +96,7 @@ Key classes:
 Path: `email-writer-react/`
 
 ### Scripts
-```
+```bash
 npm install
 npm run dev      # start Vite dev server
 npm run build    # production build
@@ -98,6 +112,7 @@ Path: `AI_Email_Chrome_Extension/`
 - Loads on Gmail pages (`*://mail.google.com/*`).
 - Observes compose windows and injects an "AI Reply" button.
 - On click, posts the current email content and optional tone to the backend.
+- The button text changes to "Generating..." during API call.
 - Inserts the generated text into Gmail's compose textbox.
 
 ### Permissions and Hosts
@@ -111,6 +126,13 @@ Defined in `manifest.json`:
 3. Click "Load unpacked" and select the `AI_Email_Chrome_Extension/` folder.
 4. Open Gmail, compose/reply, and use the injected "AI Reply" button.
 
+## Features
+- 🚀 **Seamless Gmail Integration**: Button appears directly in Gmail's compose interface
+- 🤖 **AI-Powered Replies**: Leverages Google Gemini for intelligent email generation
+- 🎨 **Tone Selection**: Choose between professional, casual, or friendly tones
+- 💻 **Dual Interface**: Use via Chrome extension in Gmail or standalone web app
+- ⚡ **Real-time Feedback**: Visual indicators show generation progress
+
 ## Development Notes
 - The backend expects valid Gemini configuration. Without it, `POST /api/email/generate` will fail.
 - If using a different port or host, update:
@@ -119,12 +141,19 @@ Defined in `manifest.json`:
 - For production, consider moving API base URLs to environment configs and securing the API.
 
 ## Troubleshooting
-- 404/Network errors from clients:
+- **404/Network errors from clients**:
   - Ensure backend is running and reachable at `http://localhost:8080`.
   - Check CORS and host permissions.
-- Backend startup issues:
+- **Backend startup issues**:
   - Verify JDK 23 is installed and `JAVA_HOME` set.
   - Ensure `gemini.api.url` and `gemini.api.key` are configured.
-- Gemini API errors:
+- **Gemini API errors**:
   - Confirm model path and API key are valid.
+  - Check API quota and rate limits.
+- **Extension not working**:
+  - Reload the extension from `chrome://extensions`.
+  - Check that host permissions include `http://localhost:8080/*`.
+  - Verify Gmail page has fully loaded before composing.
 
+## Contributing
+[Add contribution guidelines here]
